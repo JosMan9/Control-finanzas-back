@@ -13,7 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalTime;
+import java.util.Date;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "gasto")
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,19 +42,19 @@ public class Gasto {
     private BigDecimal monto;
     
     @Column(nullable = true, name = "fecha_operacion")
-    private LocalTime fechaOperacion;
+    private Date fechaOperacion;
     
     @Column(nullable = false, name = "fecha_quincena")
-    private LocalTime fechaQuincena;
+    private Date fechaQuincena;
     
     @Column(nullable = false, name = "es_cubierto")
     private Boolean esCubierto;
     
     @OneToOne
-    @JoinColumn(name = "ingreso_id", unique = true)
+    @JoinColumn(name = "ingreso_id")
     private Ingreso ingreso;
     
     @OneToOne
-    @JoinColumn(name = "tipo_gasto_id", unique = true)
+    @JoinColumn(name = "tipo_gasto_id")
     private TipoGasto tipoGasto;
 }

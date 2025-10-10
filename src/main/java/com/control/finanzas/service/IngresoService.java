@@ -30,7 +30,6 @@ public class IngresoService {
         Periodicidad p = periodicidadRepository.findById(ingreso.getPeriodicidad().getId())
                 .orElseThrow(() -> new RuntimeException("No se encontró periodicidad"));
         ingreso.setPeriodicidad(p);
-        System.out.println("fegeg " + ingreso.toString());
         return ingresoRepository.save(ingreso);
     }
     
