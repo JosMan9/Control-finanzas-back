@@ -45,5 +45,9 @@ public class Ingreso {
     @OneToOne
     @JoinColumn(name = "periodicidad_id")
     private Periodicidad periodicidad;
+    
+    @OneToOne
+    @JoinColumn(name = "quincena_id")
+    private Quincena quincena;
             
 }

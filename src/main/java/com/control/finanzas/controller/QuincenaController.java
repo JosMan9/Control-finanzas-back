@@ -4,8 +4,8 @@
  */
 package com.control.finanzas.controller;
 
-import com.control.finanzas.entity.Ingreso;
-import com.control.finanzas.service.IngresoService;
+import com.control.finanzas.entity.Quincena;
+import com.control.finanzas.service.QuincenaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,36 +23,35 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Manuel
  */
 @RestController
-@RequestMapping("/ingreso")
-public class IngresoController {
+@RequestMapping("/quincena")
+public class QuincenaController {
     
     @Autowired
-    private IngresoService ingresoService;
+    private QuincenaService qs;
     
     @PostMapping
-    public Ingreso agregarIngreso(@RequestBody Ingreso i) {
-        return ingresoService.agregarIngreso(i);
+    public Quincena agregarQuincena(@RequestBody Quincena q) {
+        return qs.agregarQuincena(q);
     }
     
     @GetMapping
-    public List<Ingreso> obtenerTodos() {
-        return ingresoService.obtenerTodosIngresos();
+    public List<Quincena> obtenerQuincenas() {
+        return qs.obtenerQuincenas();
     }
     
     @GetMapping("/{id}")
-    public Ingreso obtenerIngreso(@PathVariable Long id) {
-        return ingresoService.obtenerIngreso(id).orElseThrow(() -> new RuntimeException("No se encontró el ingreso"));
+    public Quincena obtenerQuincena(@PathVariable Long id) {
+        return qs.obtenerQuincena(id).orElseThrow(() -> new RuntimeException("No se encontró la quincena"));
     }
     
-    @PutMapping("/{id}")
-    public ResponseEntity<Ingreso> actualizarIngreso(@PathVariable Long id, @RequestBody Ingreso i) {
-        Ingreso ingreso = ingresoService.actualizarIngreso(id, i);
-        return ResponseEntity.ok(ingreso);
-    }
+     @PutMapping("/{id}")
+     public ResponseEntity<Quincena> actualizarQuincena(@PathVariable Long id, @RequestBody Quincena q) {
+         Quincena quincena = qs.actualizarQuincena(id, q);
+         return ResponseEntity.ok(quincena);
+     }
     
-    @DeleteMapping("/{id}")
-    public void eliminarIngreso(@PathVariable Long id) {
-        ingresoService.eliminarIngreso(id);
-    }
-    
+     @DeleteMapping("/{id}")
+     public void eliminarQuincena(@PathVariable Long id) {
+         qs.eliminarQuincena(id);
+     }
 }

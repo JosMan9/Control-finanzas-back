@@ -8,6 +8,7 @@ import com.control.finanzas.entity.Tarjeta;
 import com.control.finanzas.service.TarjetaService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +45,9 @@ public class TarjetaController {
     }
     
     @PutMapping("/{id}")
-    public Tarjeta actualizar(@PathVariable Long id, @RequestBody Tarjeta tarjeta) {
-        return tarjetaService.actualizarTarjeta(id, tarjeta);
+    public ResponseEntity<Tarjeta> actualizar(@PathVariable Long id, @RequestBody Tarjeta tarjeta) {
+        Tarjeta t = tarjetaService.actualizarTarjeta(id,tarjeta);
+        return ResponseEntity.ok(t);
     }
     
     @DeleteMapping("/{id}")

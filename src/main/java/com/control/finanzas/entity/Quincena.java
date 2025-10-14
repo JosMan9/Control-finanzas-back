@@ -9,10 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.util.Date;
 import lombok.Data;
 import lombok.Getter;
@@ -24,38 +21,21 @@ import lombok.Setter;
  * @author Manuel
  */
 @Entity
-@Table(name = "gasto")
+@Table(name = "quincena")
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
-public class Gasto {
+public class Quincena {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column(nullable = false)
-    private String concepto;
+    private String nombre;
     
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal monto;
+    @Column(nullable = false)
+    private Date fecha;
     
-    @Column(nullable = true, name = "fecha_operacion")
-    private Date fechaOperacion;
-    
-    @Column(nullable = false, name = "es_cubierto")
-    private Boolean esCubierto;
-    
-    @OneToOne
-    @JoinColumn(name = "ingreso_id")
-    private Ingreso ingreso;
-    
-    @OneToOne
-    @JoinColumn(name = "tipo_gasto_id")
-    private TipoGasto tipoGasto;
-    
-    @OneToOne
-    @JoinColumn(name = "quincena_id")
-    private Quincena quincena;
 }

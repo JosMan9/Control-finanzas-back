@@ -4,7 +4,7 @@
  */
 package com.control.finanzas.repository;
 
-import com.control.finanzas.entity.GastosTarjeta;
+import com.control.finanzas.entity.Quincena;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Manuel
  */
 @Repository
-public interface GastosTarjetaRepository extends JpaRepository<GastosTarjeta, Long>{
+public interface QuincenaRepository extends JpaRepository<Quincena, Long>{
     
 }

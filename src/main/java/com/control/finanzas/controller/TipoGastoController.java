@@ -8,6 +8,7 @@ import com.control.finanzas.entity.TipoGasto;
 import com.control.finanzas.service.TipoGastoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,12 +41,13 @@ public class TipoGastoController {
     
     @GetMapping("/{id}")
     public TipoGasto obtenerPorId(@PathVariable Long id) {
-        return service.obtenerTipoGastoById(id);
+        return service.obtenerTipoGastoById(id).orElseThrow(() -> new RuntimeException("No se encontró el tipo de ingreso"));
     }
     
     @PutMapping("/{id}")
-    public TipoGasto actualziar(@PathVariable Long id, TipoGasto gasto) {
-        return service.actualizarTipoGasto(id, gasto);
+    public ResponseEntity<TipoGasto> actualziar(@PathVariable Long id, @RequestBody TipoGasto gasto) {
+        TipoGasto g = service.actualizarTipoGasto(id, gasto);
+        return ResponseEntity.ok(g);
     }
     
     @DeleteMapping("/{id}")

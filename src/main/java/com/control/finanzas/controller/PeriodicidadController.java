@@ -8,6 +8,7 @@ import com.control.finanzas.entity.Periodicidad;
 import com.control.finanzas.service.PeriodicidadService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,8 +48,9 @@ public class PeriodicidadController {
     }
     
     @PutMapping("/{id}")
-    public Periodicidad actualizarPeriodicidad(@PathVariable Long id, Periodicidad p) {
-        return service.actualizarPeriodicidad(id, p);
+    public ResponseEntity<Periodicidad> actualizarPeriodicidad(@PathVariable Long id, @RequestBody Periodicidad p) {
+        Periodicidad periodicidad = service.actualizarPeriodicidad(id, p);
+        return ResponseEntity.ok(periodicidad);
     }
     
     @DeleteMapping("/{id}")

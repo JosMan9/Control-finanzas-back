@@ -6,8 +6,10 @@ package com.control.finanzas.service;
 
 import com.control.finanzas.entity.Ingreso;
 import com.control.finanzas.entity.Periodicidad;
+import com.control.finanzas.entity.Quincena;
 import com.control.finanzas.repository.IngresoRepository;
 import com.control.finanzas.repository.PeriodicidadRepository;
+import com.control.finanzas.repository.QuincenaRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,16 @@ public class IngresoService {
     private IngresoRepository ingresoRepository;
     
     @Autowired
+    private QuincenaRepository quincenaRepository;
+    
+    @Autowired
     private PeriodicidadRepository periodicidadRepository;
     
     public Ingreso agregarIngreso(Ingreso ingreso) {
         Periodicidad p = periodicidadRepository.findById(ingreso.getPeriodicidad().getId())
                 .orElseThrow(() -> new RuntimeException("No se encontró periodicidad"));
+        Quincena q = quincenaRepository.findById(ingreso.getQuincena().getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró la quincena"));
         ingreso.setPeriodicidad(p);
         return ingresoRepository.save(ingreso);
     }
@@ -46,6 +53,7 @@ public class IngresoService {
             ingreso.setMonto(i.getMonto());
             ingreso.setNombre(i.getNombre());
             ingreso.setPeriodicidad(i.getPeriodicidad());
+            ingreso.setQuincena(i.getQuincena());
             return ingresoRepository.save(ingreso);
         }).orElseThrow(() -> new RuntimeException("No se encontró el ingreso"));
     }

@@ -36,6 +36,8 @@ public class TarjetaService {
     public Tarjeta actualizarTarjeta(Long id, Tarjeta datosActualizados) {
         return tarjetaRepository.findById(id).map(tarjeta -> {
             tarjeta.setNombre(datosActualizados.getNombre());
+            tarjeta.setDiaCorte(datosActualizados.getDiaCorte());
+            tarjeta.setDiaPago(datosActualizados.getDiaPago());
             return tarjetaRepository.save(tarjeta);
         }).orElseThrow(() -> new RuntimeException("Tarjeta no encontrada con ID:" + id));
     }

@@ -7,6 +7,7 @@ package com.control.finanzas.service;
 import com.control.finanzas.entity.TipoGasto;
 import com.control.finanzas.repository.TipoGastoRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,8 @@ public class TipoGastoService {
         return gastoRepository.findAll();
     }
     
-    public TipoGasto obtenerTipoGastoById(Long id) {
-        return gastoRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontró el tipo de gasto"));
+    public Optional<TipoGasto> obtenerTipoGastoById(Long id) {
+        return gastoRepository.findById(id);
     }
     
    public TipoGasto actualizarTipoGasto(Long id, TipoGasto gasto) {

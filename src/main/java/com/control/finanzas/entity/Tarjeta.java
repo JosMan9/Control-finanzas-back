@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Date;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,9 @@ public class Tarjeta {
     @Column(nullable = false)
     private String nombre;
     
+    @Column(nullable = false, name = "dia_corte")
+    private String diaCorte;
+    
+    @Column(nullable = false, name = "dia_Pago")
+    private String diaPago;
 }
