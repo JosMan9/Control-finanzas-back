@@ -57,7 +57,7 @@ public class GastoService {
         return gastoRepository.findById(id);
     }
     
-    public Gasto actualizarGasto(Long id, Gasto g) {
+    public Optional<Gasto> actualizarGasto(Long id, Gasto g) {
         return gastoRepository.findById(id).map(gasto -> {
             gasto.setConcepto(g.getConcepto());
             gasto.setEsCubierto(g.getEsCubierto());
@@ -67,11 +67,14 @@ public class GastoService {
             gasto.setTipoGasto(g.getTipoGasto());
             gasto.setQuincena(g.getQuincena());
             return gastoRepository.save(gasto);
-        }).orElseThrow(() -> new RuntimeException("No se encontró el gasto"));   
+        });   
     }
     
-    public void eliminarGasto(Long id) {
-        gastoRepository.deleteById(id);
+    public boolean eliminarGasto(Long id) {
+        if(gastoRepository.existsById(id)) {
+            gastoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-    
 }

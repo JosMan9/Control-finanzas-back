@@ -48,18 +48,21 @@ public class IngresoService {
         return ingresoRepository.findById(id);
     }
     
-    public Ingreso actualizarIngreso(Long id, Ingreso i) {
+    public Optional<Ingreso> actualizarIngreso(Long id, Ingreso i) {
         return ingresoRepository.findById(id).map(ingreso -> {
             ingreso.setMonto(i.getMonto());
             ingreso.setNombre(i.getNombre());
             ingreso.setPeriodicidad(i.getPeriodicidad());
             ingreso.setQuincena(i.getQuincena());
             return ingresoRepository.save(ingreso);
-        }).orElseThrow(() -> new RuntimeException("No se encontró el ingreso"));
+        });
     }
     
-    public void eliminarIngreso(Long id) {
-        ingresoRepository.deleteById(id);
+    public boolean eliminarIngreso(Long id) {
+        if(ingresoRepository.existsById(id)) {
+            ingresoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-    
 }

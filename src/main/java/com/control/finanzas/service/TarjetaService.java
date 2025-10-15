@@ -33,17 +33,21 @@ public class TarjetaService {
         return tarjetaRepository.findById(id);
     }
     
-    public Tarjeta actualizarTarjeta(Long id, Tarjeta datosActualizados) {
+    public Optional<Tarjeta> actualizarTarjeta(Long id, Tarjeta datosActualizados) {
         return tarjetaRepository.findById(id).map(tarjeta -> {
             tarjeta.setNombre(datosActualizados.getNombre());
             tarjeta.setDiaCorte(datosActualizados.getDiaCorte());
             tarjeta.setDiaPago(datosActualizados.getDiaPago());
             return tarjetaRepository.save(tarjeta);
-        }).orElseThrow(() -> new RuntimeException("Tarjeta no encontrada con ID:" + id));
+        });
     }
     
-    public void eliminar(Long id) {
-        tarjetaRepository.deleteById(id);
+    public boolean eliminar(Long id) {
+        if(tarjetaRepository.existsById(id)) {
+            tarjetaRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
     
 }

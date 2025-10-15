@@ -33,15 +33,20 @@ public class TipoGastoService {
         return gastoRepository.findById(id);
     }
     
-   public TipoGasto actualizarTipoGasto(Long id, TipoGasto gasto) {
+   public Optional<TipoGasto> actualizarTipoGasto(Long id, TipoGasto gasto) {
        return gastoRepository.findById(id).map(tipoGasto -> {
            tipoGasto.setNombre(gasto.getNombre());
            return gastoRepository.save(tipoGasto);
-       }).orElseThrow(() -> new RuntimeException("No se encontró el tipo de gasto"));
+       });
    }
    
-   public void eliminarTipoGsto(Long id) {
-       gastoRepository.deleteById(id);
+   public boolean eliminarTipoGsto(Long id) {
+       if(gastoRepository.existsById(id)) {
+           gastoRepository.deleteById(id);
+           return true;
+       } else {
+           return false;
+       }
    }
     
     

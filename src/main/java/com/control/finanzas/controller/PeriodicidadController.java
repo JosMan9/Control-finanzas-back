@@ -4,10 +4,13 @@
  */
 package com.control.finanzas.controller;
 
+import com.control.finanzas.dto.ApiResponse;
 import com.control.finanzas.entity.Periodicidad;
 import com.control.finanzas.service.PeriodicidadService;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,32 +33,45 @@ public class PeriodicidadController {
     private PeriodicidadService service;
     
     @PostMapping
-    public Periodicidad crear(@RequestBody Periodicidad p) {
-        System.out.println("nombre " + p.getNombre());
-         System.out.println("dias " + p.getDias());
-          System.out.println("activo " + p.getActivo());
-        return service.agregarPeriodicidad(p);
+    public ResponseEntity<ApiResponse<Periodicidad>> crear(@RequestBody Periodicidad p) {
+        Periodicidad periodicidad = service.agregarPeriodicidad(p);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Se ha creado correctamente la periodicidad", periodicidad));
     }
     
     @GetMapping
-    public List<Periodicidad> obtenerTodos() {
-        return service.obtenerPeriodicidadTodos();
+    public ResponseEntity<ApiResponse<List<Periodicidad>>> obtenerTodos() {
+        List lista = service.obtenerPeriodicidadTodos();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Se han obtenido todas las periodicidades", lista));
     }
     
     @GetMapping("/{id}")
-    public Periodicidad obtenerId(@PathVariable Long id) {
-        return service.obtenerPeriodicadPorId(id).orElseThrow(() -> new RuntimeException("No se encontró ningujna periodicidad"));
+    public ResponseEntity<ApiResponse<Periodicidad>> obtenerId(@PathVariable Long id) {
+        Optional<Periodicidad> periodicidad = service.obtenerPeriodicadPorId(id);
+        
+        if(periodicidad.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se ha obtenido la periodicidad", periodicidad.get()));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró la periodicidad", null));
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Periodicidad> actualizarPeriodicidad(@PathVariable Long id, @RequestBody Periodicidad p) {
-        Periodicidad periodicidad = service.actualizarPeriodicidad(id, p);
-        return ResponseEntity.ok(periodicidad);
+    public ResponseEntity<ApiResponse<Periodicidad>> actualizarPeriodicidad(@PathVariable Long id, @RequestBody Periodicidad p) {
+        Optional<Periodicidad> periodicidad = service.actualizarPeriodicidad(id, p);
+        
+        if(periodicidad.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se ha actualizado la periodicidad", periodicidad.get()));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró la periodicidad", null));
     }
     
     @DeleteMapping("/{id}")
-    public void eliminarPeriodicidad(@PathVariable Long id) {
-        service.eliminar(id);
+    public ResponseEntity<ApiResponse<Void>> eliminarPeriodicidad(@PathVariable Long id) {
+        boolean flag = service.eliminar(id);
+        
+        if(flag) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se ha eliminado la periodicidad", null));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró la periodicidad", null));
     }
     
 }

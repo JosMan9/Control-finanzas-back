@@ -13,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,9 +34,13 @@ public class GastosTarjeta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Min(1)
+    @Max(12)
     @Column(name = "mes_actual", nullable = false)
     private Integer mesActual;
     
+    @Min(1)
+    @Max(12)
     @Column(name = "mes_final", nullable = false)
     private Integer mesFinal;
     

@@ -33,16 +33,20 @@ public class QuincenaService {
         return quincenaRepository.findById(id);
     }
     
-    public Quincena actualizarQuincena(Long id, Quincena q) {
+    public Optional<Quincena> actualizarQuincena(Long id, Quincena q) {
         return quincenaRepository.findById(id).map(quincena -> {
             quincena.setFecha(q.getFecha());
             quincena.setNombre(q.getNombre());
             return quincenaRepository.save(quincena);
-        }).orElseThrow(() -> new RuntimeException("No se encontró la quincena"));
+        });
     }
     
-    public void eliminarQuincena(Long id) {
-        quincenaRepository.deleteById(id);
+    public boolean eliminarQuincena(Long id) {
+        if(quincenaRepository.existsById(id)) {
+           quincenaRepository.deleteById(id);
+           return true;
+        }
+        return false;
     }
     
     

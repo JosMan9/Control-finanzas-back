@@ -33,17 +33,20 @@ public class PeriodicidadService {
         return periodicidadRepository.findById(id);
     }
     
-    public Periodicidad actualizarPeriodicidad(Long id, Periodicidad p) {
+    public Optional<Periodicidad> actualizarPeriodicidad(Long id, Periodicidad p) {
         return periodicidadRepository.findById(id).map(periodicidad -> {
             periodicidad.setNombre(p.getNombre());
             periodicidad.setActivo(p.getActivo());
             periodicidad.setDias(p.getDias());
             return periodicidadRepository.save(periodicidad);
-        }).orElseThrow(() -> new RuntimeException("Periodicidad no encontrada"));
+        });
     }
     
-    public void eliminar(Long id) {
-        periodicidadRepository.deleteById(id);
+    public boolean eliminar(Long id) {
+        if(periodicidadRepository.existsById(id)) {
+            periodicidadRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
-    
 }

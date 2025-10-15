@@ -4,10 +4,15 @@
  */
 package com.control.finanzas.controller;
 
+import com.control.finanzas.dto.ApiResponse;
 import com.control.finanzas.entity.TipoGasto;
 import com.control.finanzas.service.TipoGastoService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,29 +35,49 @@ public class TipoGastoController {
     private TipoGastoService service;
     
     @PostMapping
-    public TipoGasto agregar(@RequestBody TipoGasto gasto) {
-        return service.agregarTipoGasto(gasto);
+    public ResponseEntity<ApiResponse<TipoGasto>> agregar(@RequestBody TipoGasto gasto) {
+       TipoGasto tipoGasto = service.agregarTipoGasto(gasto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Tipo de gassto creado correctamente", tipoGasto));
     }
     
     @GetMapping
-    public List<TipoGasto> obtenerTodos() {
-        return service.obtenerTodosTipoGasto();
+    public ResponseEntity<ApiResponse<List<TipoGasto>>> obtenerTodos() {
+        List lita =  service.obtenerTodosTipoGasto();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Lista de tipos de gatos obtenidas correctamente", lita));
     }
     
     @GetMapping("/{id}")
-    public TipoGasto obtenerPorId(@PathVariable Long id) {
-        return service.obtenerTipoGastoById(id).orElseThrow(() -> new RuntimeException("No se encontró el tipo de ingreso"));
+    public ResponseEntity<ApiResponse<TipoGasto>> obtenerPorId(@PathVariable Long id) {
+        Optional<TipoGasto> tipoOptional = service.obtenerTipoGastoById(id);
+        
+        if(tipoOptional.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se obtubo el tipo de gasto", tipoOptional.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró el tipo de gasto con id " + id, null));
+        }
+
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<TipoGasto> actualziar(@PathVariable Long id, @RequestBody TipoGasto gasto) {
-        TipoGasto g = service.actualizarTipoGasto(id, gasto);
-        return ResponseEntity.ok(g);
+    public ResponseEntity<ApiResponse<TipoGasto>> actualziar(@PathVariable Long id, @RequestBody TipoGasto gasto) {
+        Optional<TipoGasto> g = service.actualizarTipoGasto(id, gasto);
+        
+        if(g.isPresent()) {
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se actualizó el tipo de gasto", g.get()));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró el tipo de gasto con id " + id, null));
+        }
     }
     
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        service.eliminarTipoGsto(id);
+    public ResponseEntity<ApiResponse<Void>> eliminar(@PathVariable Long id) {
+       boolean flag =  service.eliminarTipoGsto(id);
+       
+       if(flag) {
+           return ResponseEntity.ok(new ApiResponse<>(true, "Se eliminó el tipo de gasto", null));
+       } else {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró el tipo de gasto con id " + id, null));
+       }
     }
     
 }

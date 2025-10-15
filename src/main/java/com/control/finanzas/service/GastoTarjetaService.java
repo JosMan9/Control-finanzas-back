@@ -4,10 +4,23 @@
  */
 package com.control.finanzas.service;
 
+import com.control.finanzas.entity.Gasto;
+import com.control.finanzas.repository.GastoRepository;
+import com.control.finanzas.repository.GastosTarjetaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author Manuel
  */
+@Service
 public class GastoTarjetaService {
+    
+    @Autowired
+    private GastosTarjetaRepository gastoTarjetaRepository;
+    
+    @Autowired
+    private GastoRepository gastoRepository;
     
 }

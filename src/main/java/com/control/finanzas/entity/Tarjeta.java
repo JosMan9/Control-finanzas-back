@@ -10,7 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Date;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,9 +36,13 @@ public class Tarjeta {
     @Column(nullable = false)
     private String nombre;
     
+    @Min(1)
+    @Max(31)
     @Column(nullable = false, name = "dia_corte")
     private String diaCorte;
     
+    @Min(1)
+    @Max(31)
     @Column(nullable = false, name = "dia_Pago")
     private String diaPago;
 }
