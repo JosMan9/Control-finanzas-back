@@ -49,7 +49,7 @@ public class TarjetaController {
         Optional<Tarjeta> tarjeta = tarjetaService.obtenerPorId(id);
         
         if(tarjeta.isPresent()) {
-            return ResponseEntity.ok(new ApiResponse<>(true, "Se obtuvo la tarjeta", tarjeta.get()));
+            return ResponseEntity.ok(new ApiResponse<>(true, "Se obtuvo la tarjeta" + id, tarjeta.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse<>(false, "No se encontró la tarjeta", null));
     }

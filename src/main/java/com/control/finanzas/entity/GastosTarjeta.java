@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "gastos_tarjeta")
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,7 +51,7 @@ public class GastosTarjeta {
     private Tarjeta tarjeta;
     
     @Column(name = "es_mio", nullable = false)
-    private Boolean eMio;
+    private Boolean esMio;
     
     @Column(name = "cantidad_abonada", nullable = false, precision = 10, scale = 2)
     private BigDecimal cantidadAbonada;

@@ -5,8 +5,13 @@
 package com.control.finanzas.service;
 
 import com.control.finanzas.entity.Gasto;
+import com.control.finanzas.entity.GastosTarjeta;
+import com.control.finanzas.entity.Tarjeta;
 import com.control.finanzas.repository.GastoRepository;
 import com.control.finanzas.repository.GastosTarjetaRepository;
+import com.control.finanzas.repository.TarjetaRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,46 @@ public class GastoTarjetaService {
     private GastosTarjetaRepository gastoTarjetaRepository;
     
     @Autowired
+    private TarjetaRepository tarjetaRepository;
+    
+    @Autowired
     private GastoRepository gastoRepository;
     
+    public GastosTarjeta agregarGastoTarjeta(GastosTarjeta gt) {
+        Gasto gasto = gastoRepository.findById(gt.getGasto().getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró el gasto"));
+        Tarjeta tarjeta = tarjetaRepository.findById(gt.getTarjeta().getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró la tarjeta"));
+        gt.setTarjeta(tarjeta);
+        gt.setGasto(gasto);
+        return gastoTarjetaRepository.save(gt);
+    }
+    
+    public List<GastosTarjeta> obtenerTodos() {
+        return gastoTarjetaRepository.findAll();
+    }
+    
+    public Optional<GastosTarjeta> obtenerGastoTarjets(Long id) {
+        return gastoTarjetaRepository.findById(id);
+    }
+    
+    public Optional<GastosTarjeta> actualizarGastoTarjeta(Long id, GastosTarjeta gastosTarjeta) {
+        return gastoTarjetaRepository.findById(id).map(gt -> {
+            gt.setCantidadAbonada(gastosTarjeta.getCantidadAbonada());
+            gt.setEsMio(gastosTarjeta.getEsMio());
+            gt.setGasto(gastosTarjeta.getGasto());
+            gt.setMesActual(gastosTarjeta.getMesActual());
+            gt.setMesFinal(gastosTarjeta.getMesFinal());
+            gt.setTarjeta(gastosTarjeta.getTarjeta());
+            return gastoTarjetaRepository.save(gt);
+        });
+    }
+    
+    public boolean eliminarGastosTarjeta(Long id) {
+        if(gastoTarjetaRepository.existsById(id)) {
+            gastoTarjetaRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
