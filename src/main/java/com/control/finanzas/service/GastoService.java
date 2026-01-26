@@ -6,11 +6,9 @@ package com.control.finanzas.service;
 
 import com.control.finanzas.entity.Gasto;
 import com.control.finanzas.entity.Ingreso;
-import com.control.finanzas.entity.Quincena;
 import com.control.finanzas.entity.TipoGasto;
 import com.control.finanzas.repository.GastoRepository;
 import com.control.finanzas.repository.IngresoRepository;
-import com.control.finanzas.repository.QuincenaRepository;
 import com.control.finanzas.repository.TipoGastoRepository;
 import java.util.List;
 import java.util.Optional;
@@ -33,19 +31,13 @@ public class GastoService {
     @Autowired
     private IngresoRepository ingresoRepository;
     
-    @Autowired
-    private QuincenaRepository quincenaRepository;
-    
     public Gasto agregarGasto(Gasto g) {
         TipoGasto tipoGasto = tipoIngresoGastoRepository.findById(g.getTipoGasto().getId())
                 .orElseThrow(() -> new RuntimeException("No se encontró el tipo de gasto"));
         Ingreso ingreso = ingresoRepository.findById(g.getIngreso().getId()).
                 orElseThrow(() -> new RuntimeException("No se encontró el ingreso"));
-        Quincena q = quincenaRepository.findById(g.getQuincena().getId())
-                .orElseThrow(() -> new RuntimeException("No se encontró la quincena"));
         g.setIngreso(ingreso);
         g.setTipoGasto(tipoGasto);
-        g.setQuincena(q);
         return gastoRepository.save(g);
     }
     
@@ -65,7 +57,6 @@ public class GastoService {
             gasto.setIngreso(g.getIngreso());
             gasto.setMonto(g.getMonto());
             gasto.setTipoGasto(g.getTipoGasto());
-            gasto.setQuincena(g.getQuincena());
             return gastoRepository.save(gasto);
         });   
     }

@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import javax.validation.constraints.Max;
@@ -46,7 +46,7 @@ public class GastosTarjeta {
     @Column(name = "mes_final", nullable = false)
     private Integer mesFinal;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(unique = true, name = "tarjeta_id")
     private Tarjeta tarjeta;
     
@@ -56,7 +56,11 @@ public class GastosTarjeta {
     @Column(name = "cantidad_abonada", nullable = false, precision = 10, scale = 2)
     private BigDecimal cantidadAbonada;
     
-    @OneToOne
-    @JoinColumn(name = "gasto_id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "gasto_id")
     private Gasto gasto;
+    
+    @ManyToOne
+    @JoinColumn(name = "mes_id")
+    private Mes mes;
 }
