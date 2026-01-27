@@ -1,0 +1,29 @@
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: control-finanzas-db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:${PORT_DB}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: control-finanzas-back
+    ports:
+      - "${PORT_BACKEND}:${PORT_BACKEND}"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: ${BACKEND_URL_DATASOURCE}
+      SPRING_DATASOURCE_USERNAME: ${BACKEND_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${BACKEND_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${BACKEND_DDL_HIBERNATE}
+
+volumes:
+  postgres_data:
