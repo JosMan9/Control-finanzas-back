@@ -20,14 +20,14 @@ jobs:
       - name:  Detect version bump
         id: bump
         run: |
-          BRANCH="${{github.event.pull_request.head.ref}}"
+          BRANCH="${ {github.event.pull_request.head.ref }}"
           echo "Rama origen: $BRANCH"
 
-          IF [[ "$BRANCH" == feature/* ]]; then
+          if [[ "$BRANCH" == feature/* ]]; then
             echo "type=minor" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == fix/* ]] then
+          elif [[ "$BRANCH" == fix/* ]]; then
             echo "type=patch" >> $GITHUB_OUTPUT
-          elif [[ "$BRANCH" == major/* || "$BRANCH" == breaking/* ]] then
+          elif [[ "$BRANCH" == major/* || "$BRANCH" == breaking/* ]]; then
             echo "type=major" >> $GITHUB_OUTPUT
           fi
 
@@ -47,17 +47,17 @@ jobs:
               if [ "${{ steps.bump.outputs.type }}" = "major" ]; then
                 echo "\${ parsedVersion.nextMajorVersion }.0.0"
               elif [ "${{ steps.bump.outputs.type }}" = "minor" ]; then
-                echo "\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0"
+                echo "\${ parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion }.0"
               else
-                echo "\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}"
+                echo "\${ parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion }"
               fi
             ) \
-            versions: commit
+            versions:commit
 
 
       - name: Commit and tag version
         run: |
-          VERSION=${mvn help:evaluate -Dexpression=project.version -q -DforceStdout}
+          VERSION=${ mvn help:evaluate -Dexpression=project.version -q -DforceStdout }
           echo "Nueva version: $VERSION"
 
           git config user.name "github-actions"
