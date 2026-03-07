@@ -48,6 +48,10 @@ public class PrestamoDeuda {
     @Column(nullable = false, name = "fecha_prestamo")
     private Date fechaPrestamo;
     
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
+    
     
     public void pagar(BigDecimal montoPago) {
         if(montoPago == null ||  montoPago.compareTo(BigDecimal.ZERO) <= 0) {

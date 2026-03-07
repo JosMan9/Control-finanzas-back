@@ -6,11 +6,14 @@ package com.control.finanzas.service;
 
 import com.control.finanzas.entity.Persona;
 import com.control.finanzas.entity.PrestamoDeuda;
+import com.control.finanzas.entity.Status;
 import com.control.finanzas.repository.PersonaRepository;
 import com.control.finanzas.repository.PrestamoDeudaRepository;
+import com.control.finanzas.repository.StatusRepository;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +31,16 @@ public class PrestamoDeudaService {
     @Autowired
     private PersonaRepository personaRepository;
     
+    @Autowired
+    private StatusRepository statusRepository;
+    
     public PrestamoDeuda agregarPrestamoDeuda(PrestamoDeuda pd) {
         Persona p = personaRepository.findById(pd.getPersona().getId())
                 .orElseThrow(() -> new RuntimeException("No se encontró la persona"));
+        Status s = statusRepository.findById(pd.getStatus().getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró el status"));
         pd.setPersona(p);
+        pd.setStatus(s);
         return prestamoDeudaRepository.save(pd);
     }
     
@@ -49,6 +58,7 @@ public class PrestamoDeudaService {
             p.setCantidadPrestada(deuda.getCantidadPrestada());
             p.setPersona(deuda.getPersona());
             p.setFechaPrestamo(deuda.getFechaPrestamo());
+            p.setStatus(deuda.getStatus());
             return prestamoDeudaRepository.save(p);
         });
     }
